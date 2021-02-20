@@ -31,7 +31,8 @@ public class LocationService extends Service {
             @Override
             public void onLocationFound(@NonNull Location location) {
                 // Increment our meters count
-                metersRun += prevLocation.distanceTo(location);
+                if(prevLocation != null)
+                    metersRun += prevLocation.distanceTo(location);
 
                 FirebaseCalls.pushDistance(FirebaseAuth.getInstance().getUid(), CurrentMatch.currentMatch.getMatchId(), metersRun);
 

@@ -46,7 +46,12 @@ public class Match {
 
     public void setOpponent(User user) {
         this.opponent = user;
-        PreviousRaces.adapter.notifyDataSetChanged();
+        if(PreviousRaces.adapter != null) {
+            PreviousRaces.adapter.notifyDataSetChanged();
+        }
+        if(CurrentMatch.tv_opponentName != null) {
+            CurrentMatch.tv_opponentName.setText(user.name);
+        }
     }
 
     public User getOpponent() {

@@ -17,7 +17,7 @@ public class CurrentMatch extends AppCompatActivity {
     Date startDate;
 
     static Button b_status;
-    TextView tv_opponentName;
+    static TextView tv_opponentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,11 @@ public class CurrentMatch extends AppCompatActivity {
         this.currentMatch = match;
         // Start timer for startTimestamp
         startDate = currentMatch.startTimestamp.toDate();
-        tv_opponentName.setText(currentMatch.getOpponent().name);
+        if(currentMatch.getOpponent() != null) {
+            tv_opponentName.setText(currentMatch.getOpponent().name);
+        } else {
+            tv_opponentName.setText("");
+        }
 
         startTimerThread();
     }
@@ -83,8 +87,13 @@ public class CurrentMatch extends AppCompatActivity {
             difference = 100;
             while(difference > 50) {
                 difference = startDate.getTime() - new Date().getTime();
-                int seconds = (int) (difference / 1000) % 60;
-                b_status.setText(String.format("%d seconds...", seconds));
+                int seconds = (int) (difference / 1000);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        b_status.setText(String.format("%d seconds...", seconds));
+                    }
+                });
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
