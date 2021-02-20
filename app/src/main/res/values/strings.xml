@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bolt</string>
+    <string name="loc_title">Location Permission Required</string>
+    <string name="loc_desc">In order to compete against opponents, we need access to your location to keep track of how far and fast you have run.</string>
 </resources>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "15220750484",
+    "project_id": "bolt-hacksc",
+    "storage_bucket": "bolt-hacksc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15220750484:android:4e069683b1925c18dfdc81",
+        "android_client_info": {
+          "package_name": "com.cyclone.bolt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "15220750484-is1tq0oev51hsf47fg0uv2ad0ha9385l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cyclone.bolt",
+            "certificate_hash": "4b9680cbc3c6b72afd3d8483fa9bbb0fbec31381"
+          }
+        },
+        {
+          "client_id": "15220750484-48meh2s7haqkouna6lda9ev0h69m7eeg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTZrCprqW1NnAlBCiq9VMEmvRlhw6hKd4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "15220750484-48meh2s7haqkouna6lda9ev0h69m7eeg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
