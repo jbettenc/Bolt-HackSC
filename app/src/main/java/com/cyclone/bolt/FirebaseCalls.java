@@ -74,6 +74,10 @@ public class FirebaseCalls {
         });
     }
 
+    public static void pushDistance(String uuid, String matchId, float distance) {
+        FirebaseFirestore.getInstance().collection("matchActivities").document(uuid).update("distanceRun", distance);
+    }
+
     static ListenerRegistration reg;
     public static void listenForNewMatch(String uuid, EventListener<DocumentSnapshot> callback) {
         reg = FirebaseFirestore.getInstance().collection("users").document(uuid).addSnapshotListener(callback);

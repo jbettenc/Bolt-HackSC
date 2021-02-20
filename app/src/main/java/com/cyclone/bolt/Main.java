@@ -59,9 +59,8 @@ public class Main extends AppCompatActivity {
                                         // Clear currentMatch
                                         FirebaseCalls.clearCurrentMatch(FirebaseAuth.getInstance().getUid());
 
-                                        // TODO:
-                                        // Load the UI and start listening to location changes
-                                        // Load the opponent details and the rest of the match details
+                                        // Load our current match activity
+                                        showCurrentMatch();
                                     }
                                 } catch(NullPointerException e) {e.printStackTrace();}
                             }
@@ -89,6 +88,14 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
 
         // TODO: Custom animations?
+        finish();
+    }
+
+    private void showCurrentMatch() {
+        Intent intent = new Intent(Main.this, CurrentMatch.class);
+        startActivity(intent);
+        intent.putExtra("currentMatchId", currentMatchId);
+
         finish();
     }
 }

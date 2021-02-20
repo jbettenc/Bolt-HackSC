@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="FFFFFF"
+    android:orientation="vertical"
+    android:weightSum="64"
+    tools:context=".MainActivity">
+
+    <!-- Group 1 -->
+    <View
+        android:id="@+id/group_1"
+        android:layout_width="236dp"
+        android:layout_height="51dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="62dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="440dp"
+        android:background="#00000000"
+        />
+
+    <!-- BoltLogoTransparent 1 -->
+    <View
+        android:id="@+id/boltlogotra"
+        android:layout_width="272dp"
+        android:layout_height="272dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="44dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/boltlogotra"
+        />
+
+
+    <!-- drawable/boltlogotra.xml -->
+    <vector
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:aapt="http://schemas.android.com/aapt"
+        android:width="272dp"
+        android:height="272dp"
+        android:viewportWidth="272"
+        android:viewportHeight="272"
+        >
+        <group>
+            <clip-path
+                android:pathData="M0 0H272V272H0V0Z"
+                />
+        </group>
+    </vector>
+
+    <!-- BoltLogoText 1 -->
+    <View
+        android:id="@+id/boltlogotex"
+        android:layout_width="282dp"
+        android:layout_height="385dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="39dp"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/boltlogotext" />
+
+    <!-- drawable/boltlogotex.xml -->
+    <vector
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:aapt="http://schemas.android.com/aapt"
+        android:width="282dp"
+        android:height="385dp"
+        android:viewportWidth="282"
+        android:viewportHeight="385"
+        >
+        <group>
+            <clip-path
+                android:pathData="M0 0H282V385H0V0Z"
+                />
+        </group>
+    </vector>
+
+    <!-- image 13 -->
+    <View
+        android:id="@+id/image_13"
+        android:layout_width="168dp"
+        android:layout_height="62dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="94dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="519dp"
+        android:background="@drawable/image_13"
+        />
+
+    <!-- drawable/image_13.xml -->
+    <vector
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:aapt="http://schemas.android.com/aapt"
+        android:width="168dp"
+        android:height="62dp"
+        android:viewportWidth="168"
+        android:viewportHeight="62"
+        >
+
+        <group>
+            <clip-path
+                android:pathData="M0 0H168V62H0V0Z"
+                />
+        </group>
+    </vector>
+
+</RelativeLayout>
