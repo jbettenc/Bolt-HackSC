@@ -52,14 +52,6 @@ public class FirebaseCalls {
 
     static List<Match> matches;
     public static void fetchLatestMatches(MultipleFirestoreCallback multipleFirestoreCallback) {
-//        System.out.println(FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("previousMatches").orderBy("timestamp").limit(20).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot querySnapshot) {
-//                for(DocumentSnapshot doc : querySnapshot.getDocuments()) {
-//                    System.out.println(doc.getId().trim());
-//                }
-//            }
-//        }));
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("previousMatches").orderBy("timestamp").limit(20).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override

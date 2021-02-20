@@ -74,14 +74,14 @@ public class Main extends AppCompatActivity {
                         }
                         try {
                             if (value != null && !value.getData().get("currentMatch").equals("") && !value.getData().get("currentMatch").equals(currentMatchId)) {
-                                System.out.println(value.getData().get("currentMatch"));
-//                                currentMatchId = value.getData().get("currentMatch");
-//
-//                                // Clear currentMatch
-//                                FirebaseCalls.clearCurrentMatch(FirebaseAuth.getInstance().getUid());
-//
-//                                // Load our current match activity
-//                                showCurrentMatch();
+//                                System.out.println(value.getData().get("currentMatch"));
+                                currentMatchId = (String) value.getData().get("currentMatch");
+
+                                // Clear currentMatch
+                                FirebaseCalls.clearCurrentMatch(FirebaseAuth.getInstance().getUid());
+
+                                // Load our current match activity
+                                showCurrentMatch();
                             }
                         } catch(NullPointerException e) {e.printStackTrace();}
                     }
@@ -110,8 +110,8 @@ public class Main extends AppCompatActivity {
 
     private void showCurrentMatch() {
         Intent intent = new Intent(Main.this, CurrentMatch.class);
-        startActivity(intent);
         intent.putExtra("currentMatchId", currentMatchId);
+        startActivity(intent);
 
         finish();
     }
