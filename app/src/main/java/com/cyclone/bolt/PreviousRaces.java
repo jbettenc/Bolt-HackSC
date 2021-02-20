@@ -7,9 +7,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class PreviousRaces extends AppCompatActivity {
     TextView tv_mainMenu;
+    RecyclerView rv_previousMatches;
+    static MatchHistoryListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +28,18 @@ public class PreviousRaces extends AppCompatActivity {
                 showMainMenu();
             }
         });
+
+        rv_previousMatches = findViewById(R.id.previousMatches);
+        adapter = new MatchHistoryListAdapter();
+        rv_previousMatches.setAdapter(adapter);
+        rv_previousMatches.setLayoutManager(new LinearLayoutManager(this));
+
+        FirebaseCalls.fetchLatestMatches(new FirebaseCalls.MultipleFirestoreCallback() {
+            @Override
+            public void onCallback(List<Match> matches) {
+                matchCallback(matches);
+            }
+        });
     }
 
     private void showMainMenu() {
@@ -30,5 +48,30 @@ public class PreviousRaces extends AppCompatActivity {
 
         // TODO: Custom animations?
         finish();
+    }
+
+    // This will get an individual match's data
+    private void matchCallback(Match match) {
+        if(match.getMatchId() != null) {
+            adapter.setMatch(match);
+        }
+    }
+
+    // This will get our list of UUIDs
+    private void matchCallback(List<Match> matches) {
+        for(Match m : matches) {
+            if(m.getMatchId() != null) {
+                System.out.println("Match callback: " + "Match ID: " + m.getMatchId());
+                adapter.setMatch(m);
+                FirebaseCalls.fetchMatch(m.getMatchId(), new FirebaseCalls.SingleFirestoreCallback() {
+                    @Override
+                    public void onCallback(Match match) {
+                        matchCallback(match);
+                    }
+                });
+            } else {
+                System.out.println("MatchCallback: getMatchId() is null");
+            }
+        }
     }
 }
