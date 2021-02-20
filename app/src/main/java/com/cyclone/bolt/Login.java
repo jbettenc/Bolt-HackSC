@@ -39,11 +39,11 @@ public class Login extends AppCompatActivity {
     FirebaseUser user;
 
     Button b_signInWithGoogle;
-    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         overridePendingTransition(0, 0);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -54,7 +54,6 @@ public class Login extends AppCompatActivity {
             setContentView(R.layout.login);
             db = FirebaseFirestore.getInstance();
 
-            progressBar = findViewById(R.id.progressBar);
             b_signInWithGoogle = findViewById(R.id.b_signInWithGoogle);
             b_signInWithGoogle.setOnClickListener(view -> createSignInIntent());
             createSignInIntent();
@@ -63,7 +62,6 @@ public class Login extends AppCompatActivity {
 
     public void createSignInIntent() {
         b_signInWithGoogle.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
 
         // [START auth_fui_create_intent]
         // Choose authentication providers
@@ -98,7 +96,6 @@ public class Login extends AppCompatActivity {
                 // response.getError().getErrorCode() and handle the error.
                 // ...
                 b_signInWithGoogle.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
                 System.err.println("Sign in failed.");
             }
         }

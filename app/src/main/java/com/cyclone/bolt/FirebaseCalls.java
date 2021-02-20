@@ -2,8 +2,10 @@ package com.cyclone.bolt;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -15,6 +17,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FirebaseCalls {
 
@@ -30,14 +33,14 @@ public class FirebaseCalls {
         });
     }
 
-    public static void fetchMatch(String matchUid, SingleFirestoreCallback firestoreCallback) {
+   public static void fetchMatch(String matchUid, SingleFirestoreCallback firestoreCallback) {
         FirebaseFirestore.getInstance().collection("matchActivities").document(matchUid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String uuid = String.valueOf(documentSnapshot.getData().get("athlete1"));
+                String uuid = String.valueOf(((Map<String, Object>)documentSnapshot.getData().get("athlete1")).get("uuid"));
                 System.out.println("FetchMatch: " + uuid);
                 if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uuid)) {
-                    uuid = String.valueOf(documentSnapshot.getData().get("athlete2"));
+                    uuid = String.valueOf(((Map<String, Object>)documentSnapshot.getData().get("athlete2")).get("uuid"));
                 }
 
                 Match match = new Match(documentSnapshot.getId(), uuid, Float.parseFloat(String.valueOf(documentSnapshot.getData().get("distance"))), ((Timestamp)documentSnapshot.getData().get("startTimestamp")));
@@ -49,15 +52,24 @@ public class FirebaseCalls {
 
     static List<Match> matches;
     public static void fetchLatestMatches(MultipleFirestoreCallback multipleFirestoreCallback) {
+//        System.out.println(FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("previousMatches").orderBy("timestamp").limit(20).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot querySnapshot) {
+//                for(DocumentSnapshot doc : querySnapshot.getDocuments()) {
+//                    System.out.println(doc.getId().trim());
+//                }
+//            }
+//        }));
         FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("previousMatches").orderBy("timestamp").limit(20).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 matches = new ArrayList<>();
                 for(DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                    matches.add(new Match(doc.getId(), "", 0, null, null));
+                    matches.add(new Match(doc.getId().trim(), "", 0, null, null));
                 }
 
+                System.out.println("MATCHES LENGTH " + matches.size());
                 multipleFirestoreCallback.onCallback(matches);
             }
         });

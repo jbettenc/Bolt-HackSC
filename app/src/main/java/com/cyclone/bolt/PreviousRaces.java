@@ -1,28 +1,38 @@
 package com.cyclone.bolt;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.InputStream;
 import java.util.List;
 
 public class PreviousRaces extends AppCompatActivity {
-    TextView tv_mainMenu;
+    ImageView back_button;
     RecyclerView rv_previousMatches;
+    ImageView profilePicture;
     static MatchHistoryListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         setContentView(R.layout.previous_races);
 
-        tv_mainMenu = findViewById(R.id.tv_mainMenu);
-        tv_mainMenu.setOnClickListener(new View.OnClickListener() {
+        back_button = findViewById(R.id.back_button);
+        back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showMainMenu();
@@ -33,6 +43,12 @@ public class PreviousRaces extends AppCompatActivity {
         adapter = new MatchHistoryListAdapter();
         rv_previousMatches.setAdapter(adapter);
         rv_previousMatches.setLayoutManager(new LinearLayoutManager(this));
+
+        profilePicture = findViewById(R.id.profilePicture);
+        try {
+            new DownloadImageTask(profilePicture).execute(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
+        } catch(Exception e) {e.printStackTrace();}
+
 
         FirebaseCalls.fetchLatestMatches(new FirebaseCalls.MultipleFirestoreCallback() {
             @Override
@@ -72,6 +88,31 @@ public class PreviousRaces extends AppCompatActivity {
             } else {
                 System.out.println("MatchCallback: getMatchId() is null");
             }
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error loading picture", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }
