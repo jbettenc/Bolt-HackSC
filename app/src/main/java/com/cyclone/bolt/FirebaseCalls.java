@@ -16,6 +16,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +38,14 @@ public class FirebaseCalls {
         FirebaseFirestore.getInstance().collection("matchActivities").document(matchUid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String uuid = String.valueOf(((Map<String, Object>)documentSnapshot.getData().get("athlete1")).get("uuid"));
-                System.out.println("FetchMatch: " + uuid);
-                if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uuid)) {
-                    uuid = String.valueOf(((Map<String, Object>)documentSnapshot.getData().get("athlete2")).get("uuid"));
-                }
+                String uuid = "";
+                try {
+                    uuid = String.valueOf(((Map<String, Object>) documentSnapshot.getData().get("athlete1")).get("uuid"));
+                    System.out.println("FetchMatch: " + uuid);
+                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uuid)) {
+                        uuid = String.valueOf(((Map<String, Object>) documentSnapshot.getData().get("athlete2")).get("uuid"));
+                    }
+                } catch(Exception e) {e.printStackTrace();}
 
                 Match match = new Match(documentSnapshot.getId(), uuid, Float.parseFloat(String.valueOf(documentSnapshot.getData().get("distance"))), ((Timestamp)documentSnapshot.getData().get("startTimestamp")));
 
@@ -79,7 +83,32 @@ public class FirebaseCalls {
     }
 
     public static void pushDistance(String uuid, String matchId, float distance) {
-        FirebaseFirestore.getInstance().collection("matchActivities").document(uuid).update("distanceRun", distance);
+        Map<String, Object> temp = new HashMap<>();
+        temp.put("distanceRun", distance);
+
+        try {
+            FirebaseFirestore.getInstance().collection("matchActivities").document(matchId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (((Map<String, Object>)documentSnapshot.getData().get("athlete1")).get("uuid").equals(uuid)) {
+                        pushDistance("athlete1", uuid, matchId, distance, ((Map<String, Object>)documentSnapshot.getData().get("athlete1")));
+                    } else {
+                        pushDistance("athlete2", uuid, matchId, distance, ((Map<String, Object>)documentSnapshot.getData().get("athlete2")));
+                    }
+                }
+            });
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void pushDistance(String athlete, String uuid, String matchId, float distance, Map<String, Object> temp) {
+        temp.put("distanceRun", distance);
+        if (athlete.equals("athlete1")) {
+            FirebaseFirestore.getInstance().collection("matchActivities").document(matchId).update("athlete1", temp);
+        } else {
+            FirebaseFirestore.getInstance().collection("matchActivities").document(matchId).update("athlete2", temp);
+        }
     }
 
     static ListenerRegistration reg;
@@ -90,6 +119,12 @@ public class FirebaseCalls {
     public static void clearCurrentMatch(String uuid) {
         reg.remove();
         FirebaseFirestore.getInstance().collection("users").document(uuid).update("currentMatch", "");
+    }
+
+    public static void pushPreviousMatch(String uuid, String matchId, Timestamp timestamp) {
+        Map<String, Object> temp = new HashMap<>();
+        temp.put("timestamp", timestamp);
+        FirebaseFirestore.getInstance().collection("users").document(uuid).collection("previousMatches").document(matchId).set(temp);
     }
 
     public interface SingleFirestoreCallback {

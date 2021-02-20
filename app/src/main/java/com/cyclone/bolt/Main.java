@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -51,6 +52,9 @@ public class Main extends AppCompatActivity {
         b_startMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                FirebaseCalls.pushDistance(FirebaseAuth.getInstance().getCurrentUser().getUid(), "lQzvgZyHTOAPvp9GDDp2", 1234);
+                FirebaseCalls.pushPreviousMatch(FirebaseAuth.getInstance().getCurrentUser().getUid(), "lQzvgZyHTOAPvp9GDDp2", Timestamp.now());
+
                 b_startMatch.setText("Looking for match...");
                 b_startMatch.setEnabled(false);
                 // Send the request to firebase
@@ -63,7 +67,6 @@ public class Main extends AppCompatActivity {
                     }
                 });
 
-                // TODO: Start listening to changes to /users/uuid/currentMatch
                 // This will allow us to listen for new updates to the currentMatch item
                 listener = new EventListener<DocumentSnapshot>() {
                     @Override

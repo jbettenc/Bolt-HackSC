@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bolt">
-        <activity android:name=".CurrentMatch"></activity>
+        <activity android:name=".MatchDetail"></activity>
+        <activity android:name=".CurrentMatch" />
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,16 +23,17 @@
 
         <service
             android:name=".LocationService"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
+
     <permission-group
         android:name="android.permission-group.LOCATION"
         android:description="@string/loc_desc"
         android:label="@string/loc_title" />
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

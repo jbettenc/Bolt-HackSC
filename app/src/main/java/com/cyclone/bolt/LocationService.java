@@ -23,6 +23,9 @@ public class LocationService extends Service {
     IBinder binder;      // interface for clients that bind
     boolean allowRebind; // indicates whether onRebind should be used
 
+    public void test() {
+
+    }
     @Override
     public void onCreate() {
         // The service is being created

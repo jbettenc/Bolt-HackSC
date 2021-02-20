@@ -2,16 +2,19 @@ package com.cyclone.bolt;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Date;
 
 public class CurrentMatch extends AppCompatActivity {
 
-    String currentMatchId;
+    static String currentMatchId;
     static Match currentMatch;
 
     Date startDate;
@@ -45,8 +48,13 @@ public class CurrentMatch extends AppCompatActivity {
     }
 
     public static void matchComplete() {
-        // TODO: Do some UI cleanup and changes now that the user has completed the run
+        // Do some UI cleanup and changes now that the user has completed the run
         b_status.setText("Match complete");
+
+        FirebaseCalls.pushPreviousMatch(FirebaseAuth.getInstance().getCurrentUser().getUid(), currentMatchId, currentMatch.startTimestamp);
+
+//        Intent intent = new Intent(CurrentMatch.this, MatchDetail.class);
+//        startActivity(intent);
     }
 
     private void loadMatchData(Match match) {
