@@ -46,6 +46,8 @@ public class LocationService extends Service {
                     CurrentMatch.matchComplete();
 
                     stopSelf();
+                } else {
+                    CurrentMatch.b_status.setText(metersRun + "/" + CurrentMatch.currentMatch.distance);
                 }
             }
 

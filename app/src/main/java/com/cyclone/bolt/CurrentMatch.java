@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -15,7 +16,8 @@ public class CurrentMatch extends AppCompatActivity {
 
     Date startDate;
 
-    TextView tv_timer;
+    static Button b_status;
+    TextView tv_opponentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +38,22 @@ public class CurrentMatch extends AppCompatActivity {
         setContentView(R.layout.current_match);
 //        tv_timer = findViewById(R.id.timer);
 
+        b_status = findViewById(R.id.b_status);
+        tv_opponentName = findViewById(R.id.tv_opponentName);
         // Load when we should start the match & start a LocationService immediately at that time
 
     }
 
     public static void matchComplete() {
         // TODO: Do some UI cleanup and changes now that the user has completed the run
+        b_status.setText("Match complete");
     }
 
     private void loadMatchData(Match match) {
         this.currentMatch = match;
         // Start timer for startTimestamp
         startDate = currentMatch.startTimestamp.toDate();
+        tv_opponentName.setText(currentMatch.getOpponent().name);
 
         startTimerThread();
     }
@@ -78,7 +84,7 @@ public class CurrentMatch extends AppCompatActivity {
             while(difference > 50) {
                 difference = startDate.getTime() - new Date().getTime();
                 int seconds = (int) (difference / 1000) % 60;
-                tv_timer.setText(String.format("%d seconds...", seconds));
+                b_status.setText(String.format("%d seconds...", seconds));
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {

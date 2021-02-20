@@ -4,11 +4,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -16,11 +20,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.io.InputStream;
+
 public class Main extends AppCompatActivity {
 
     Button b_startMatch;
 
-    TextView tv_previousMatches;
+    ImageButton b_avatar;
 
     FirebaseFirestore db;
 
@@ -36,46 +42,57 @@ public class Main extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        b_startMatch = findViewById(R.id.b_startMatch);
+        b_avatar = findViewById(R.id.avatar);
+        try {
+            new DownloadImageTask(b_avatar).execute(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
+        } catch(Exception e) {e.printStackTrace();}
+
+        b_startMatch = findViewById(R.id.b_status);
         b_startMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                b_startMatch.setText("Looking for match...");
+                b_startMatch.setEnabled(false);
                 // Send the request to firebase
                 FirebaseCalls.requestMatch(new FirebaseCalls.SingleErrorCallback() {
                     @Override
                     public void onCallback(String msg) {
-                        // This will allow us to listen for new updates to the currentMatch item
-                        listener = new EventListener<DocumentSnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                if(error != null) {
-                                    Log.w("Main", "listen:error", error);
-                                    return;
-                                }
-                                try {
-                                    if (value != null && !value.getData().get("currentMatch").equals("") && !value.getData().get("currentMatch").equals(currentMatchId)) {
-                                        currentMatchId = (String)value.getData().get("currentMatch");
-
-                                        // Clear currentMatch
-                                        FirebaseCalls.clearCurrentMatch(FirebaseAuth.getInstance().getUid());
-
-                                        // Load our current match activity
-                                        showCurrentMatch();
-                                    }
-                                } catch(NullPointerException e) {e.printStackTrace();}
-                            }
-                        };
-
-                        FirebaseCalls.listenForNewMatch(FirebaseAuth.getInstance().getUid(), listener);
+                        //error
+                        b_startMatch.setEnabled(true);
+                        b_startMatch.setText("Start Match");
                     }
                 });
 
                 // TODO: Start listening to changes to /users/uuid/currentMatch
+                // This will allow us to listen for new updates to the currentMatch item
+                listener = new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(error != null) {
+                            Log.w("Main", "listen:error", error);
+                            return;
+                        }
+                        try {
+                            if (value != null && !value.getData().get("currentMatch").equals("") && !value.getData().get("currentMatch").equals(currentMatchId)) {
+                                System.out.println(value.getData().get("currentMatch"));
+//                                currentMatchId = value.getData().get("currentMatch");
+//
+//                                // Clear currentMatch
+//                                FirebaseCalls.clearCurrentMatch(FirebaseAuth.getInstance().getUid());
+//
+//                                // Load our current match activity
+//                                showCurrentMatch();
+                            }
+                        } catch(NullPointerException e) {e.printStackTrace();}
+                    }
+                };
+
+                FirebaseCalls.listenForNewMatch(FirebaseAuth.getInstance().getUid(), listener);
             }
         });
 
-        tv_previousMatches = findViewById(R.id.tv_previousMatches);
-        tv_previousMatches.setOnClickListener(new View.OnClickListener() {
+        b_avatar = findViewById(R.id.avatar);
+        b_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPreviousRaces();
@@ -97,5 +114,30 @@ public class Main extends AppCompatActivity {
         intent.putExtra("currentMatchId", currentMatchId);
 
         finish();
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error loading picture", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
