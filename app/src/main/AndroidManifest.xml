@@ -4,12 +4,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon_xxxhdpi"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bolt">
-        <activity android:name=".MatchDetail"></activity>
+        <activity android:name=".CelebrityMatch"></activity>
+        <activity android:name=".MatchDetail" />
         <activity android:name=".CurrentMatch" />
         <activity android:name=".Login">
             <intent-filter>
@@ -30,10 +31,10 @@
         android:name="android.permission-group.LOCATION"
         android:description="@string/loc_desc"
         android:label="@string/loc_title" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
 </manifest>
