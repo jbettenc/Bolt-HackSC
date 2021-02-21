@@ -25,9 +25,15 @@ public class FirebaseCalls {
         FirebaseFirestore.getInstance().collection("users").document(uuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User user = new User((String)documentSnapshot.getData().get("profilePicUrl"), (String)documentSnapshot.getData().get("name"), (Double)documentSnapshot.getData().get("mileTime"),
-                        (Double)documentSnapshot.getData().get("mileAvg"), null, (Long)documentSnapshot.getData().get("numberOfWins"));
-                callback.onCallback(user);
+                try {
+                    User user = new User((String) documentSnapshot.getData().get("profilePicUrl"), (String) documentSnapshot.getData().get("name"), (Double) documentSnapshot.getData().get("mileTime"),
+                            (Double) documentSnapshot.getData().get("mileAvg"), null, (Long) documentSnapshot.getData().get("numberOfWins"));
+                    callback.onCallback(user);
+                } catch(ClassCastException e) {
+                    User user = new User((String) documentSnapshot.getData().get("profilePicUrl"), (String) documentSnapshot.getData().get("name"), ((Long) documentSnapshot.getData().get("mileTime")).doubleValue(),
+                            (Double) documentSnapshot.getData().get("mileAvg"), null, (Long) documentSnapshot.getData().get("numberOfWins"));
+                    callback.onCallback(user);
+                }
             }
         });
     }
