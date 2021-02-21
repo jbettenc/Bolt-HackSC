@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;

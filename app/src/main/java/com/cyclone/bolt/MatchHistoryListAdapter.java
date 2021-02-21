@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
