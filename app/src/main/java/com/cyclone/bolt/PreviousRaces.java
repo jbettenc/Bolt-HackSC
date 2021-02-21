@@ -28,6 +28,7 @@ public class PreviousRaces extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0,0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         setContentView(R.layout.previous_races);
 
@@ -61,8 +62,6 @@ public class PreviousRaces extends AppCompatActivity {
     private void showMainMenu() {
         Intent intent = new Intent(PreviousRaces.this, Main.class);
         startActivity(intent);
-
-        // TODO: Custom animations?
         finish();
     }
 

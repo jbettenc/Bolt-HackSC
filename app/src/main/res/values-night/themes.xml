@@ -4,14 +4,15 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">#FFCC00</item>
         <item name="colorPrimaryVariant">#FFCC00</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#990000</item>
         <item name="colorSecondaryVariant">#990000</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

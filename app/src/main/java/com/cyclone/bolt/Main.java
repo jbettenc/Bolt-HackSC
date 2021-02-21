@@ -10,22 +10,27 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class Main extends AppCompatActivity {
 
     Button b_startMatch;
+    ImageView back_button;
 
     ImageButton b_avatar;
 
@@ -38,11 +43,13 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0,0);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         setContentView(R.layout.main);
 
         db = FirebaseFirestore.getInstance();
 
+        back_button = findViewById(R.id.back_button);
         b_avatar = findViewById(R.id.avatar);
         try {
             new DownloadImageTask(b_avatar).execute(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
@@ -52,16 +59,17 @@ public class Main extends AppCompatActivity {
         b_startMatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FirebaseCalls.pushDistance(FirebaseAuth.getInstance().getCurrentUser().getUid(), "lQzvgZyHTOAPvp9GDDp2", 1234);
-                FirebaseCalls.pushPreviousMatch(FirebaseAuth.getInstance().getCurrentUser().getUid(), "lQzvgZyHTOAPvp9GDDp2", Timestamp.now());
 
                 b_startMatch.setText("Looking for match...");
                 b_startMatch.setEnabled(false);
+                back_button.setVisibility(View.VISIBLE);
                 // Send the request to firebase
                 FirebaseCalls.requestMatch(new FirebaseCalls.SingleErrorCallback() {
                     @Override
                     public void onCallback(String msg) {
                         //error
+                        back_button.setVisibility(View.GONE);
+                        b_avatar.setEnabled(true);
                         b_startMatch.setEnabled(true);
                         b_startMatch.setText("Start Match");
                     }
@@ -91,6 +99,22 @@ public class Main extends AppCompatActivity {
                 };
 
                 FirebaseCalls.listenForNewMatch(FirebaseAuth.getInstance().getUid(), listener);
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder()
+                                .url("https://bolt-21.herokuapp.com/match")
+                                .build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
             }
         });
 
@@ -101,12 +125,20 @@ public class Main extends AppCompatActivity {
                 showPreviousRaces();
             }
         });
+
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b_avatar.setEnabled(true);
+                b_startMatch.setEnabled(true);
+                b_startMatch.setText("Start Match");
+            }
+        });
     }
 
     private void showPreviousRaces() {
         Intent intent = new Intent(Main.this, PreviousRaces.class);
         startActivity(intent);
-
         // TODO: Custom animations?
         finish();
     }

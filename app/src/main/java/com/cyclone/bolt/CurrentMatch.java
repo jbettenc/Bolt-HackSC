@@ -87,7 +87,8 @@ public class CurrentMatch extends AppCompatActivity {
             difference = startDate.getTime() - new Date().getTime();
             difference %= 1000;
             try {
-                Thread.sleep(difference);
+                if(difference > 0)
+                    Thread.sleep(difference);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

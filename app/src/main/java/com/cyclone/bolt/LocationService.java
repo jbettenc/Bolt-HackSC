@@ -42,8 +42,6 @@ public class LocationService extends Service {
                 // Update our previous location to the newest location
                 prevLocation = location;
 
-                // TODO: Update competition in Firebase
-                // TODO: Define the meters to run
                 if(metersRun >= CurrentMatch.currentMatch.distance) {
                     // Make sure we send our completion time to Firebase. Also need to notify our
                     // main UI that we have completed the task, and then update it.
