@@ -2,10 +2,8 @@ package com.cyclone.bolt;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -47,7 +45,7 @@ public class FirebaseCalls {
                     }
                 } catch(Exception e) {e.printStackTrace();}
 
-                Match match = new Match(documentSnapshot.getId(), uuid, Float.parseFloat(String.valueOf(documentSnapshot.getData().get("distance"))), ((Timestamp)documentSnapshot.getData().get("startTimestamp")));
+                Match match = new Match(documentSnapshot.getId(), uuid, Float.parseFloat(String.valueOf(documentSnapshot.getData().get("distance"))), ((Timestamp)documentSnapshot.getData().get("startTimestamp")), ((Timestamp)documentSnapshot.getData().get("endTimestamp")), ((Map<String, Object>)documentSnapshot.getData().get("athlete1")), ((Map<String, Object>)documentSnapshot.getData().get("athlete1")));
 
                 firestoreCallback.onCallback(match);
             }
@@ -62,7 +60,7 @@ public class FirebaseCalls {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 matches = new ArrayList<>();
                 for(DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                    matches.add(new Match(doc.getId().trim(), "", 0, null, null));
+                    matches.add(new Match(doc.getId().trim(), "", 0, null, null, null, null));
                 }
 
                 System.out.println("MATCHES LENGTH " + matches.size());

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.firebase.ui.auth.AuthUI;
@@ -156,8 +157,20 @@ public class Login extends AppCompatActivity {
 
     private void checkUserData() {
         db.collection("users").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
-            if(!documentSnapshot.exists()) {
-                saveNewUserProfile(user);
+            if(!documentSnapshot.exists() || documentSnapshot.getData().get("mileTime") == null) {
+                setContentView(R.layout.enter_mile_time);
+                EditText minutesEditText = findViewById(R.id.minutesEditText);
+                EditText secondEditText = findViewById(R.id.secondsEditText);
+                Button continueButton = findViewById(R.id.continueButton);
+                continueButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(Integer.valueOf(minutesEditText.getText().toString()) > 0 || Integer.valueOf(secondEditText.getText().toString()) > 0) {
+                            int totalSec = Integer.valueOf(minutesEditText.getText().toString()) * 60 + Integer.valueOf(secondEditText.getText().toString());
+                            saveNewUserProfile(user, totalSec);
+                        }
+                    }
+                });
             } else {
                 // Check and see if the user has changed their google profile picture or display name and update it in our servers accordingly
                 if(!documentSnapshot.getData().get("profilePicUrl").equals(user.getPhotoUrl().toString())) {
@@ -176,13 +189,14 @@ public class Login extends AppCompatActivity {
         }).addOnFailureListener(e -> System.out.println("checkUserData: " + "Error checking if user exists: " + e.getMessage()));
     }
 
-    private void saveNewUserProfile(FirebaseUser user) {
+    private void saveNewUserProfile(FirebaseUser user, int mileTime) {
         Map<String, Object> userData = new HashMap<>();
         if(user != null) {
             userData.put("name", user.getDisplayName());
             userData.put("email", user.getEmail());
             userData.put("uuid", user.getUid());
             userData.put("profilePicUrl", user.getPhotoUrl().toString());
+            userData.put("mileTime", mileTime);
             db.collection("users").document(user.getUid()).set(userData)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

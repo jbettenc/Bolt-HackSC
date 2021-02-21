@@ -1,6 +1,7 @@
 package com.cyclone.bolt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -34,7 +35,7 @@ public class MatchHistoryListAdapter extends RecyclerView.Adapter<MatchHistoryLi
         }
     }
 
-    private List<Match> matches;
+    public static List<Match> matches;
 
     public MatchHistoryListAdapter() {
         this.matches = new ArrayList<>();
@@ -70,6 +71,14 @@ public class MatchHistoryListAdapter extends RecyclerView.Adapter<MatchHistoryLi
     @Override
     public void onBindViewHolder(MatchHistoryListAdapter.ViewHolder holder, int position) {
         Match match = matches.get(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(holder.itemView.getContext(), MatchDetail.class);
+                intent.putExtra("matchNumber", position);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
         TextView tv_opponentName = holder.opponentName;
         ImageView opponentPicture = holder.opponentPicture;
         if(match.getOpponent() != null) {

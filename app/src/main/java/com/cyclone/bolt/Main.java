@@ -129,6 +129,7 @@ public class Main extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                back_button.setVisibility(View.GONE);
                 b_avatar.setEnabled(true);
                 b_startMatch.setEnabled(true);
                 b_startMatch.setText("Start Match");

@@ -17,6 +17,17 @@
         app:srcCompat="@drawable/big_bolt" />
 
     <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bolt_logo_transparent" />
+
+    <ImageView
         android:id="@+id/imageView8"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,16 +54,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/other_yellow_background" />
 
-    <ImageView
-        android:id="@+id/profilePic"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="110dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/default_avatar" />
-
     <TextView
         android:id="@+id/tv_winLose"
         android:layout_width="wrap_content"
@@ -70,59 +71,66 @@
         android:id="@+id/tv_raceDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20sp"
         android:text="TextView"
         android:textColor="@color/black"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/profilePic"
-        tools:layout_editor_absoluteX="80dp" />
+        app:layout_constraintStart_toStartOf="@+id/imageView9"
+        app:layout_constraintTop_toBottomOf="@+id/profilePic" />
 
     <TextView
         android:id="@+id/tv_timeDifference"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20sp"
         android:text="TextView"
         android:textColor="@color/black"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/tv_raceDuration"
-        tools:layout_editor_absoluteX="80dp" />
+        app:layout_constraintStart_toStartOf="@+id/imageView9"
+        app:layout_constraintTop_toBottomOf="@+id/tv_raceDuration" />
 
     <TextView
         android:id="@+id/tv_raceType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="28dp"
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9"
-        tools:layout_editor_absoluteX="69dp" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_startTime"
+        app:layout_constraintStart_toStartOf="@+id/imageView8" />
 
     <TextView
         android:id="@+id/tv_startTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="16dp"
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/tv_timeDifference"
-        tools:layout_editor_absoluteX="69dp" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_endTime"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView8" />
 
     <TextView
         android:id="@+id/tv_endTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="28dp"
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/tv_startTime"
-        tools:layout_editor_absoluteX="69dp" />
+        app:layout_constraintBottom_toTopOf="@+id/b_avgSpeed"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView8" />
 
     <ImageView
         android:id="@+id/imageView12"
@@ -133,6 +141,16 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView8"
         app:layout_constraintTop_toTopOf="@+id/imageView8"
         app:srcCompat="@drawable/alarm" />
+
+    <ImageView
+        android:id="@+id/profilePic"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="110dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/default_avatar" />
 
     <Button
         android:id="@+id/b_avgSpeed"
@@ -147,25 +165,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView13"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bolt_logo_transparent" />
-
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="12dp"
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="33dp"
-        tools:layout_editor_absoluteY="19dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

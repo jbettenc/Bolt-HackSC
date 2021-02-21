@@ -2,6 +2,8 @@ package com.cyclone.bolt;
 
 import com.google.firebase.Timestamp;
 
+import java.util.Map;
+
 public class Match {
 
     Timestamp startTimestamp;
@@ -10,6 +12,9 @@ public class Match {
     User opponent;
     Timestamp matchCompletedTimestamp;
     String matchId;
+    Map<String, Object> athlete1;
+    Map<String, Object> athlete2;
+
 
     public Match(String matchId, String opponentUuid, float distanceToRun, Timestamp startTimestamp) {
         this.matchId = matchId;
@@ -27,12 +32,15 @@ public class Match {
         }
     }
 
-    public Match(String matchId, String opponentUuid, float distanceToRun, Timestamp startTimestamp, Timestamp endTimestamp) {
+    public Match(String matchId, String opponentUuid, float distanceToRun, Timestamp startTimestamp, Timestamp endTimestamp, Map<String, Object> athlete1, Map<String, Object> athlete2) {
         this.matchId = matchId;
         this.startTimestamp = startTimestamp;
         this.matchCompletedTimestamp = endTimestamp;
         this.distance = distanceToRun;
         this.opponentUuid = opponentUuid;
+
+        this.athlete1 = athlete1;
+        this.athlete2 = athlete2;
 
         if(opponentUuid != null && opponentUuid.length() > 0) {
             FirebaseCalls.fetchUser(opponentUuid, new FirebaseCalls.SingleUserCallback() {
